@@ -1,145 +1,575 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>A-Grade Darts Score Sheet</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AHDL – A Grade (19 Game Format) Web Score Sheet</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
+    :root{
+      --bg:#0b0f14; --card:#111827; --muted:#9aa4b2; --text:#e5e7eb; --accent:#22c55e; --accent-2:#60a5fa; --danger:#ef4444; --warn:#f59e0b; --line:#1f2937;
     }
-    h2, h3 {
-      margin-bottom: 8px;
+    html,body{margin:0; padding:0; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",sans-serif;}
+    .container{max-width:1100px; margin:20px auto; padding:16px;}
+    .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; box-shadow:0 10px 20px rgba(0,0,0,.25);}    
+    h1,h2,h3{margin:.3rem 0 .75rem}
+    h1{font-size:1.6rem}
+    h2{font-size:1.2rem; color:#cbd5e1}
+    .grid{display:grid; gap:12px}
+    .g2{grid-template-columns:repeat(2,1fr)}
+    .g3{grid-template-columns:repeat(3,1fr)}
+    .row{display:flex; gap:8px; flex-wrap:wrap}
+    label{font-size:.9rem; color:#cbd5e1}
+    input,select,textarea{background:#0b1220; color:var(--text); border:1px solid var(--line); border-radius:10px; padding:8px 10px; font-size:0.95rem; width:100%;}
+    input[type="number"]{text-align:right}
+    table{width:100%; border-collapse:collapse;}
+    th,td{border-bottom:1px solid var(--line); padding:8px; font-size:.92rem;}
+    th{color:#cbd5e1; font-weight:600; text-align:left; background:#121a2a; position:sticky; top:0}
+    tr:last-child td{border-bottom:none}
+    .pill{display:inline-block; padding:4px 8px; border-radius:999px; font-weight:600; font-size:.75rem}
+    .ok{background:rgba(34,197,94,.15); color:#a7f3d0; border:1px solid rgba(34,197,94,.4)}
+    .warn{background:rgba(245,158,11,.15); color:#fde68a; border:1px solid rgba(245,158,11,.4)}
+    .bad{background:rgba(239,68,68,.15); color:#fecaca; border:1px solid rgba(239,68,68,.4)}
+    .btn{background:#0b1220; color:var(--text); border:1px solid var(--line); padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:600}
+    .btn:hover{border-color:#2a3b59}
+    .btn.primary{background:linear-gradient(135deg, #2563eb, #22c55e); border:none}
+    .btnbar{display:flex; gap:10px; flex-wrap:wrap}
+    details{border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#0d1524}
+    details>summary{cursor:pointer; font-weight:700; margin:-10px -12px 10px; padding:10px 12px}
+    .muted{color:var(--muted); font-size:.9rem}
+    .right{text-align:right}
+    .center{text-align:center}
+    .small{font-size:.8rem}
+    .signature{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+
+    @media print{
+      .btnbar, .no-print{display:none !important}
+      body{background:#fff; color:#000}
+      .card{box-shadow:none; border:none}
+      th,td{border:1px solid #bbb}
+      details{border:none; padding:0}
+      details[open]>summary{display:none}
     }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-bottom: 16px;
-    }
-    table, th, td {
-      border: 1px solid #333;
-    }
-    th, td {
-      padding: 4px;
-      text-align: center;
-    }
-    input[type="text"], input[type="number"] {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 2px 4px;
-    }
-    .game-table th { background: #eee; }
-    .stats-table th { background: #ddd; }
-    .section { margin-top: 24px; }
-    .btn { padding: 6px 12px; margin-top: 8px; }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="card">
+      <h1>Adelaide Hills Hotels Darts League — A Grade (19 Game Format)</h1>
+      <div class="row">
+        <div class="g2 grid" style="width:100%">
+          <div>
+            <label>Home Team</label>
+            <input id="homeTeam" placeholder="Team name" />
+          </div>
+          <div>
+            <label>Away Team</label>
+            <input id="awayTeam" placeholder="Team name" />
+          </div>
+          <div>
+            <label>Date</label>
+            <input id="matchDate" type="date" />
+          </div>
+          <div>
+            <label>Round #</label>
+            <input id="roundNo" type="number" min="1" step="1" />
+          </div>
+        </div>
+      </div>
+      <p class="muted small">If playing 5+ players, all must play a minimum of 2 games. When subbed out, can’t play again. Positions in Doubles/Team game do not have to match Singles order.</p>
 
-<h2>Adelaide Hills Hotels Darts League  
-A Grade (19‐Game Format) – </h2>
+      <!-- DOUBLES 601 -->
+      <details open>
+        <summary>Doubles (601) — 4 matches</summary>
+        <table id="doublesTbl">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Home Pair</th>
+              <th>Away Pair</th>
+              <th class="center">180</th>
+              <th class="center">171</th>
+              <th class="center">Peg</th>
+              <th class="center">W/L</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- rows inserted by JS -->
+          </tbody>
+        </table>
+      </details>
 
-<form id="dartsForm">
+      <!-- TEAM GAME 801 -->
+      <details>
+        <summary>Team Game (801) — up to 4 legs</summary>
+        <table id="teamTbl">
+          <thead>
+            <tr>
+              <th>Leg</th>
+              <th>Notes (players/rotation)</th>
+              <th class="center">180</th>
+              <th class="center">171</th>
+              <th class="center">Peg</th>
+              <th class="center">W/L</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </details>
 
-  <!-- Match Header -->
-  <div class="section">
-    <table>
-      <tr>
-        <th>Date</th>
-        <th>Home Team</th>
-        <th>Away Team</th>
-      </tr>
-      <tr>
-        <td><input type="text" id="matchDate" value="2025" /></td>
-        <td><input type="text" id="homeTeam" /></td>
-        <td><input type="text" id="awayTeam" /></td>
-      </tr>
-    </table>
+      <!-- SINGLES ROUNDS 501 -->
+      <details>
+        <summary>Singles — Rounds (501) × 4</summary>
+        <div id="singlesWrap" class="grid" style="grid-template-columns:1fr"></div>
+      </details>
+
+      <!-- PLAYER STATS -->
+      <details open>
+        <summary>Players — Totals & Averages</summary>
+        <table id="playersTbl">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Player Full Name</th>
+              <th class="center">180s</th>
+              <th class="center">171s</th>
+              <th class="center">Pegs</th>
+              <th class="center">Darts</th>
+              <th class="center">Score</th>
+              <th class="center">Average <span class="small muted" title="Score ÷ Darts (per-dart). Change in Settings for 3-dart avg.">(S/D)</span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="row small muted">Tip: Player totals can auto-sum from entries above when you link names inside match rows.</div>
+      </details>
+
+      <!-- WINNER / SUMMARY -->
+      <details open>
+        <summary>Match Summary & Validation</summary>
+        <div class="grid g3">
+          <div class="card" style="padding:12px">
+            <h3>Home Totals</h3>
+            <div class="row">
+              <div style="flex:1"><label>Games Won</label><input id="homeGames" type="number" min="0" step="1" value="0"></div>
+              <div style="flex:1"><label>Pegs</label><input id="homePegs" type="number" min="0" step="1" value="0"></div>
+            </div>
+          </div>
+          <div class="card" style="padding:12px">
+            <h3>Away Totals</h3>
+            <div class="row">
+              <div style="flex:1"><label>Games Won</label><input id="awayGames" type="number" min="0" step="1" value="0"></div>
+              <div style="flex:1"><label>Pegs</label><input id="awayPegs" type="number" min="0" step="1" value="0"></div>
+            </div>
+          </div>
+          <div class="card" style="padding:12px">
+            <h3>Winner</h3>
+            <div class="row">
+              <div style="flex:1"><label>Winner</label><input id="winner" placeholder="Home / Away"></div>
+              <div style="flex:1"><label>Notes</label><input id="winnerNotes" placeholder="e.g., 10–9, pegs 5–3"></div>
+            </div>
+            <div class="row small muted">Totals auto-calc from sections above; you can override if needed.</div>
+          </div>
+        </div>
+        <div id="validation" class="small" style="margin-top:8px"></div>
+      </details>
+
+      <!-- SIGNATURES / SUBMISSION INFO -->
+      <details>
+        <summary>Signatures & Submission</summary>
+        <div class="signature">
+          <div>
+            <label>Signed by Home Captain</label>
+            <input id="sigHome" placeholder="Name" />
+          </div>
+          <div>
+            <label>Signed by Away Captain</label>
+            <input id="sigAway" placeholder="Name" />
+          </div>
+        </div>
+        <p class="small muted" style="margin-top:8px">Winning captain should return score sheet by 4pm on the Thursday following the match. Email: ahhdlstats@gmail.com — SMS: 0402 203 880</p>
+      </details>
+
+      <!-- SETTINGS -->
+      <details>
+        <summary>Settings</summary>
+        <div class="row">
+          <label class="row" style="align-items:center; gap:10px"><input id="useThreeDartAvg" type="checkbox"> Use 3-dart average (Score ÷ Darts × 3)</label>
+          <label class="row" style="align-items:center; gap:10px"><input id="autoLinkNames" type="checkbox" checked> Auto-sum player totals from match rows where names match</label>
+        </div>
+      </details>
+
+      <!-- ACTIONS -->
+      <div class="btnbar no-print" style="margin-top:16px">
+        <button class="btn primary" id="btnPrint">Export PDF / Print</button>
+        <button class="btn" id="btnDownloadJSON">Download JSON</button>
+        <button class="btn" id="btnDownloadCSV">Download CSV</button>
+        <button class="btn" id="btnCopySummary">Copy Text Summary</button>
+        <button class="btn" id="btnReset">Reset</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Game Sections -->
-  <div class="section">
-    <h3>DOUBLES (501)</h3>
-    <table class="game-table">
-      <tr><th>Game</th><th>Home Player(s)</th><th>Away Player(s)</th><th>Winner</th></tr>
-      <!-- six rows -->
-      <!-- we’ll repeat this block with IDs game1…game6 -->
-      <!-- For brevity, I’ll show row 1; copy for rows 2–6 -->
-      <tr>
-        <td>1</td>
-        <td><input type="text" id="game1Home" placeholder="e.g. Smith & Jones" /></td>
-        <td><input type="text" id="game1Away" placeholder="e.g. Brown & Lee" /></td>
-        <td>
-          <label><input type="radio" name="game1Winner" value="home" /> H</label>
-          <label><input type="radio" name="game1Winner" value="away" /> A</label>
+<script>
+(function(){
+  const Q = (sel, ctx=document) => ctx.querySelector(sel);
+  const QA = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+  const num = v => (v===""||isNaN(+v))?0:+v;
+
+  // Build tables
+  const doublesRows = 4;
+  const teamLegs = 4;
+  const singleRounds = 4;
+  const singlesPerRound = 4;
+  const playersMax = 6;
+
+  const doublesTbl = Q('#doublesTbl tbody');
+  for(let i=1;i<=doublesRows;i++){
+    const tr=document.createElement('tr');
+    tr.innerHTML = `
+      <td class="center">${i}</td>
+      <td><input class="pname home" placeholder="Home pair (e.g., P1 & P2)"/></td>
+      <td><input class="pname away" placeholder="Away pair (e.g., P1 & P2)"/></td>
+      <td class="center"><input type="number" class="n home180" min="0" step="1" value="0"/></td>
+      <td class="center"><input type="number" class="n home171" min="0" step="1" value="0"/></td>
+      <td class="center"><input type="number" class="n homePeg" min="0" step="1" value="0"/></td>
+      <td class="center">
+        <select class="wl">
+          <option value="">–</option>
+          <option value="H">Home</option>
+          <option value="A">Away</option>
+        </select>
+      </td>`;
+    doublesTbl.appendChild(tr);
+  }
+
+  const teamTbl = Q('#teamTbl tbody');
+  for(let i=1;i<=teamLegs;i++){
+    const tr=document.createElement('tr');
+    tr.innerHTML = `
+      <td class="center">${i}</td>
+      <td><input placeholder="Notes (players / order)"/></td>
+      <td class="center"><input type="number" class="n home180" min="0" step="1" value="0"/></td>
+      <td class="center"><input type="number" class="n home171" min="0" step="1" value="0"/></td>
+      <td class="center"><input type="number" class="n homePeg" min="0" step="1" value="0"/></td>
+      <td class="center">
+        <select class="wl">
+          <option value="">–</option>
+          <option value="H">Home</option>
+          <option value="A">Away</option>
+        </select>
+      </td>`;
+    teamTbl.appendChild(tr);
+  }
+
+  const singlesWrap = Q('#singlesWrap');
+  const roundNames = ["1st", "2nd", "3rd", "4th"];
+  for(let r=1;r<=singleRounds;r++){
+    const card=document.createElement('div');
+    card.className='card';
+    card.style.padding='12px';
+    card.innerHTML = `<h3>Singles – ${roundNames[r-1]} Round (501)</h3>
+      <table data-round="${r}" class="singlesTbl">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Home Player</th>
+            <th>Away Player</th>
+            <th class="center">Peg</th>
+            <th class="center">Darts</th>
+            <th class="center">Score</th>
+            <th class="center">180</th>
+            <th class="center">171</th>
+            <th class="center">W/L (Home)</th>
+            <th class="center">Darts ST</th>
+            <th class="center">Score ST</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>`;
+    const tbody = card.querySelector('tbody');
+    for(let i=1;i<=singlesPerRound;i++){
+      const tr=document.createElement('tr');
+      tr.innerHTML = `
+        <td class="center">${i}</td>
+        <td><input class="pname player home" placeholder="Home player"/></td>
+        <td><input class="pname player away" placeholder="Away player"/></td>
+        <td class="center"><input type="number" class="n homePeg" min="0" step="1" value="0"/></td>
+        <td class="center"><input type="number" class="n darts" min="0" step="1" value="0"/></td>
+        <td class="center"><input type="number" class="n score" min="0" step="1" value="0"/></td>
+        <td class="center"><input type="number" class="n home180" min="0" step="1" value="0"/></td>
+        <td class="center"><input type="number" class="n home171" min="0" step="1" value="0"/></td>
+        <td class="center">
+          <select class="wl">
+            <option value="">–</option>
+            <option value="H">Home</option>
+            <option value="A">Away</option>
+          </select>
         </td>
-      </tr>
-      <!-- … copy rows up to game6 … -->
-    </table>
+        <td class="center"><input type="number" class="n dartsST" min="0" step="1" value="0"/></td>
+        <td class="center"><input type="number" class="n scoreST" min="0" step="1" value="0"/></td>
+      `;
+      tbody.appendChild(tr);
+    }
+    singlesWrap.appendChild(card);
+  }
 
-    <h3>SINGLES – 1st Round (501)</h3>
-    <table class="game-table">
-      <tr><th>Game</th><th>Home Player</th><th>Away Player</th><th>Winner</th></tr>
-      <!-- rows 7–12 -->
-      <!-- example row 7 -->
-      <tr>
-        <td>7</td>
-        <td><input type="text" id="game7Home" /></td>
-        <td><input type="text" id="game7Away" /></td>
-        <td>
-          <label><input type="radio" name="game7Winner" value="home" /> H</label>
-          <label><input type="radio" name="game7Winner" value="away" /> A</label>
-        </td>
-      </tr>
-      <!-- … up to game12 … -->
-    </table>
+  // Players table
+  const playersTbl = Q('#playersTbl tbody');
+  for(let i=1;i<=playersMax;i++){
+    const tr=document.createElement('tr');
+    tr.innerHTML = `
+      <td class="center">${i}</td>
+      <td><input class="pname master" placeholder="Full name"/></td>
+      <td class="center"><input type="number" class="n p180" min="0" step="1" value="0"/></td>
+      <td class="center"><input type="number" class="n p171" min="0" step="1" value="0"/></td>
+      <td class="center"><input type="number" class="n pPeg" min="0" step="1" value="0"/></td>
+      <td class="center"><input type="number" class="n pDarts" min="0" step="1" value="0"/></td>
+      <td class="center"><input type="number" class="n pScore" min="0" step="1" value="0"/></td>
+      <td class="center"><output class="avg">0.00</output></td>`;
+    playersTbl.appendChild(tr);
+  }
 
-    <h3>SINGLES – 2nd Round (301)</h3>
-    <table class="game-table">
-      <tr><th>Game</th><th>Home Player</th><th>Away Player</th><th>Winner</th></tr>
-      <!-- rows 13–18 -->
-      <!-- example row 13 -->
-      <tr>
-        <td>13</td>
-        <td><input type="text" id="game13Home" /></td>
-        <td><input type="text" id="game13Away" /></td>
-        <td>
-          <label><input type="radio" name="game13Winner" value="home" /> H</label>
-          <label><input type="radio" name="game13Winner" value="away" /> A</label>
-        </td>
-      </tr>
-      <!-- … up to game18 … -->
-    </table>
+  // Live calculations
+  const state = {
+    threeDart:false,
+    autoLink:true,
+  };
 
-    <h3>TEAM GAME (801)</h3>
-    <table class="game-table">
-      <tr><th>Game</th><th colspan="2">Home Players (4)</th><th colspan="2">Away Players (4)</th><th>Winner</th></tr>
-      <tr>
-        <td>19</td>
-        <td colspan="2"><input type="text" id="game19Home" placeholder="Comma-separate 4 names" /></td>
-        <td colspan="2"><input type="text" id="game19Away" placeholder="Comma-separate 4 names" /></td>
-        <td>
-          <label><input type="radio" name="game19Winner" value="home" /> H</label>
-          <label><input type="radio" name="game19Winner" value="away" /> A</label>
-        </td>
-      </tr>
-    </table>
-  </div>
+  Q('#useThreeDartAvg').addEventListener('change', e=>{state.threeDart=e.target.checked; recalcAll();});
+  Q('#autoLinkNames').addEventListener('change', e=>{state.autoLink=e.target.checked; recalcAll();});
 
-  <!-- Match Results & Stats -->
-  <div class="section">
-    <h3>Match Results</h3>
-    <table>
-      <tr><th>Home Wins</th><th>Away Wins</th><th>Score</th></tr>
-      <tr>
-        <td><input type="text" id="homeWins" disabled /></td>
-        <td><input type="text" id="awayWins" disabled /></td>
-        <td><input type="text" id="matchScore" disabled /></td>
-      </tr>
-    </table>
+  function recalcAll(){
+    // Team games & pegs
+    let gamesH=0,gamesA=0, pegsH=0, pegsA=0;
 
-    <h3>High-Score Stats</h3>
-    <table>
-      <tr><th>Highest Peg</th><th>180s (Home)</th><th>180s (Away)</th></tr>
-      <tr>
-        <td><input type="number" id
+    const sumInt = (sel, ctx) => QA(sel, ctx).reduce((a,i)=>a+num(i.value),0);
+
+    // Doubles
+    QA('#doublesTbl tbody tr').forEach(tr=>{
+      const who = Q('select.wl', tr).value;
+      if(who==='H') gamesH++; else if(who==='A') gamesA++;
+      pegsH += num(Q('.homePeg', tr).value);
+    });
+
+    // Team legs
+    QA('#teamTbl tbody tr').forEach(tr=>{
+      const who = Q('select.wl', tr).value;
+      if(who==='H') gamesH++; else if(who==='A') gamesA++;
+      pegsH += num(Q('.homePeg', tr).value);
+    });
+
+    // Singles
+    QA('.singlesTbl').forEach(tbl=>{
+      QA('tbody tr', tbl).forEach(tr=>{
+        const who = Q('select.wl', tr).value;
+        if(who==='H') gamesH++; else if(who==='A') gamesA++;
+        pegsH += num(Q('.homePeg', tr).value);
+      })
+    });
+
+    // Update totals (allow manual override later by user if needed)
+    Q('#homeGames').value = gamesH;
+    Q('#awayGames').value = gamesA;
+    Q('#homePegs').value = pegsH;
+    // Note: Away pegs not captured individually on rows in original; leave manual if needed.
+
+    // Player averages from master table
+    QA('#playersTbl tbody tr').forEach(tr=>{
+      const darts = num(Q('.pDarts', tr).value);
+      const score = num(Q('.pScore', tr).value);
+      const base = darts>0 ? (score/darts) : 0;
+      const avg = state.threeDart ? base*3 : base;
+      Q('.avg', tr).textContent = avg.toFixed(2);
+    });
+
+    // Optional: auto-link totals from names in match rows
+    if(state.autoLink){
+      // Reset aggregates
+      const map = new Map(); // name -> {p180,p171,pPeg,darts,score}
+      function add(name, k, v){ if(!name) return; name=name.trim(); if(!name) return; const o=map.get(name)||{p180:0,p171:0,pPeg:0,darts:0,score:0}; o[k]+=v; map.set(name,o);}      
+
+      // Doubles & team (only 180/171/peg tracked for home side in this sheet)
+      QA('#doublesTbl tbody tr').forEach(tr=>{
+        const namesH = (Q('input.home', tr).value||'').split('&');
+        const n180=num(Q('.home180', tr).value), n171=num(Q('.home171', tr).value), peg=num(Q('.homePeg', tr).value);
+        namesH.forEach(n=>{ add(n,'p180',n180); add(n,'p171',n171); add(n,'pPeg',peg); });
+      });
+      QA('#teamTbl tbody tr').forEach(tr=>{
+        const note = Q('td:nth-child(2) input', tr).value||''; // optional list of names
+        const namesH = note.split(/[,&]/);
+        const n180=num(Q('.home180', tr).value), n171=num(Q('.home171', tr).value), peg=num(Q('.homePeg', tr).value);
+        namesH.forEach(n=>{ add(n,'p180',n180); add(n,'p171',n171); add(n,'pPeg',peg); });
+      });
+      // Singles rows (home side stats present in sheet)
+      QA('.singlesTbl tbody tr').forEach(tr=>{
+        const n=Q('input.player.home', tr).value;
+        add(n,'p180', num(Q('.home180', tr).value));
+        add(n,'p171', num(Q('.home171', tr).value));
+        add(n,'pPeg', num(Q('.homePeg', tr).value));
+        add(n,'darts', num(Q('.darts', tr).value));
+        add(n,'score', num(Q('.score', tr).value));
+      });
+
+      // Push to players table rows by name match
+      QA('#playersTbl tbody tr').forEach(tr=>{
+        const name = (Q('.pname.master', tr).value||'').trim();
+        if(!name) return;
+        const o = map.get(name);
+        if(!o) return;
+        Q('.p180', tr).value = o.p180;
+        Q('.p171', tr).value = o.p171;
+        Q('.pPeg', tr).value = o.pPeg;
+        Q('.pDarts', tr).value = o.darts;
+        Q('.pScore', tr).value = o.score;
+        const base = o.darts>0 ? (o.score/o.darts) : 0;
+        const avg = state.threeDart ? base*3 : base;
+        Q('.avg', tr).textContent = avg.toFixed(2);
+      });
+    }
+
+    // Winner helper
+    const home = num(Q('#homeGames').value), away = num(Q('#awayGames').value);
+    if(home||away){
+      Q('#winner').value = home>away ? 'Home' : (away>home ? 'Away' : 'Tie');
+      Q('#winnerNotes').value = `${home}–${away}, pegs ${num(Q('#homePegs').value)}–${num(Q('#awayPegs').value)}`;
+    }
+
+    validate();
+  }
+
+  function validate(){
+    const el = Q('#validation');
+    const notices=[];
+    // Example guardrails
+    const rounds = QA('.singlesTbl');
+    let singlesGames = 0;
+    rounds.forEach(tbl=> singlesGames += QA('tbody tr', tbl).length);
+    const totalGames = doublesRows + teamLegs + singlesGames; // adjustable if match structure changes
+    const home = num(Q('#homeGames').value), away = num(Q('#awayGames').value);
+    if(home+away !== totalGames){
+      notices.push(`<span class="pill warn">Check: games won (${home+away}) should equal total games (${totalGames})</span>`);
+    } else {
+      notices.push(`<span class="pill ok">Games sum OK: ${home}+${away}=${totalGames}</span>`);
+    }
+
+    // Player name duplicates
+    const names = QA('.pname.master').map(i=>i.value.trim()).filter(Boolean);
+    const dups = names.filter((n,i)=>names.indexOf(n)!==i);
+    if(dups.length){
+      notices.push(`<span class="pill warn">Duplicate player names in table: ${[...new Set(dups)].join(', ')}</span>`);
+    }
+
+    el.innerHTML = notices.join(' ');
+  }
+
+  // Event delegation for recalculation
+  document.addEventListener('input', (e)=>{
+    if(e.target.matches('input,select,textarea')) recalcAll();
+  });
+  document.addEventListener('change', (e)=>{
+    if(e.target.matches('input,select,textarea')) recalcAll();
+  });
+
+  // Actions
+  Q('#btnPrint').addEventListener('click', ()=> window.print());
+
+  function collect(){
+    const data={
+      meta:{homeTeam:Q('#homeTeam').value, awayTeam:Q('#awayTeam').value, date:Q('#matchDate').value, round:num(Q('#roundNo').value)},
+      doubles:[], team:[], singles:[], players:[], totals:{homeGames:num(Q('#homeGames').value), awayGames:num(Q('#awayGames').value), homePegs:num(Q('#homePegs').value), awayPegs:num(Q('#awayPegs').value)},
+      summary:{winner:Q('#winner').value, notes:Q('#winnerNotes').value},
+      signatures:{home:Q('#sigHome').value, away:Q('#sigAway').value},
+      settings:{threeDart:state.threeDart, autoLink:state.autoLink}
+    };
+    QA('#doublesTbl tbody tr').forEach((tr,idx)=>{
+      data.doubles.push({
+        idx:idx+1,
+        home:Q('input.home', tr).value,
+        away:Q('input.away', tr).value,
+        h180:num(Q('.home180', tr).value), h171:num(Q('.home171', tr).value), peg:num(Q('.homePeg', tr).value),
+        wl:Q('select.wl', tr).value
+      });
+    });
+    QA('#teamTbl tbody tr').forEach((tr,idx)=>{
+      data.team.push({
+        idx:idx+1, note:Q('td:nth-child(2) input', tr).value,
+        h180:num(Q('.home180', tr).value), h171:num(Q('.home171', tr).value), peg:num(Q('.homePeg', tr).value), wl:Q('select.wl', tr).value
+      });
+    });
+    QA('.singlesTbl').forEach((tbl, ridx)=>{
+      QA('tbody tr', tbl).forEach((tr, midx)=>{
+        data.singles.push({ round:ridx+1, match:midx+1,
+          home:Q('input.player.home', tr).value, away:Q('input.player.away', tr).value,
+          peg:num(Q('.homePeg', tr).value), darts:num(Q('.darts', tr).value), score:num(Q('.score', tr).value),
+          h180:num(Q('.home180', tr).value), h171:num(Q('.home171', tr).value), wl:Q('select.wl', tr).value,
+          dartsST:num(Q('.dartsST', tr).value), scoreST:num(Q('.scoreST', tr).value)
+        });
+      })
+    });
+    QA('#playersTbl tbody tr').forEach((tr, idx)=>{
+      const darts=num(Q('.pDarts', tr).value), score=num(Q('.pScore', tr).value);
+      const base = darts? score/darts : 0; const avg = state.threeDart ? base*3 : base;
+      data.players.push({
+        idx:idx+1,
+        name:Q('.pname.master', tr).value,
+        n180:num(Q('.p180', tr).value), n171:num(Q('.p171', tr).value), pegs:num(Q('.pPeg', tr).value), darts, score, avg:+avg.toFixed(2)
+      });
+    });
+    return data;
+  }
+
+  function download(name, content, type='application/json'){
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([content],{type}));
+    a.download=name; a.click(); URL.revokeObjectURL(a.href);
+  }
+
+  Q('#btnDownloadJSON').addEventListener('click', ()=>{
+    const data = collect();
+    download(filename('json'), JSON.stringify(data, null, 2));
+  });
+
+  Q('#btnDownloadCSV').addEventListener('click', ()=>{
+    const d = collect();
+    const lines=[
+      'Section,Round,Match,Home,Away,Peg,Darts,Score,180,171,WL,DartsST,ScoreST',
+    ];
+    d.doubles.forEach(r=> lines.push(`Doubles,,${r.idx},"${r.home}","${r.away}",${r.peg},,,${r.h180},${r.h171},${r.wl},,`));
+    d.team.forEach(r=> lines.push(`Team,${r.idx},,${d.meta.homeTeam},${d.meta.awayTeam},${r.peg},,,${r.h180},${r.h171},${r.wl},,`));
+    d.singles.forEach(r=> lines.push(`Singles,${r.round},${r.match},"${r.home}","${r.away}",${r.peg},${r.darts},${r.score},${r.h180},${r.h171},${r.wl},${r.dartsST},${r.scoreST}`));
+    download(filename('csv'), lines.join('\n'), 'text/csv');
+  });
+
+  Q('#btnCopySummary').addEventListener('click', ()=>{
+    const d = collect();
+    const lines=[];
+    lines.push(`${d.meta.date} – ${d.meta.homeTeam} vs ${d.meta.awayTeam} (Rnd ${d.meta.round})`);
+    lines.push(`Result: ${d.summary.winner} – ${d.summary.notes}`);
+    lines.push(`Doubles: ${d.doubles.length} matches`);
+    lines.push(`Team legs: ${d.team.length}`);
+    const wh = d.players.filter(p=>p.n180).map(p=>`${p.name} (${p.n180}×180)`);
+    if(wh.length) lines.push(`180s: ${wh.join('; ')}`);
+    navigator.clipboard.writeText(lines.join('\n'));
+  });
+
+  Q('#btnReset').addEventListener('click', ()=>{
+    if(!confirm('Clear all fields?')) return;
+    QA('input').forEach(i=>{ if(i.type==='checkbox') i.checked=false; else i.value=i.defaultValue||''; });
+    QA('select').forEach(s=> s.value='');
+    recalcAll();
+  });
+
+  function filename(ext){
+    const d = new Date(Q('#matchDate').value || Date.now());
+    const ds = d.toISOString().slice(0,10);
+    const h = (Q('#homeTeam').value||'Home').replace(/\W+/g,'');
+    const a = (Q('#awayTeam').value||'Away').replace(/\W+/g,'');
+    return `AHDL_${ds}_${h}_vs_${a}.${ext}`;
+  }
+
+  // init
+  recalcAll();
+})();
+</script>
+</body>
+</html>
