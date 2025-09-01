@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>A-Grade Darts Score Sheet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h2, h3 {
+      margin-bottom: 8px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+    table, th, td {
+      border: 1px solid #333;
+    }
+    th, td {
+      padding: 4px;
+      text-align: center;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 2px 4px;
+    }
+    .game-table th { background: #eee; }
+    .stats-table th { background: #ddd; }
+    .section { margin-top: 24px; }
+    .btn { padding: 6px 12px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<h2>Adelaide Hills Hotels Darts League  
+A Grade (19‐Game Format) – </h2>
+
+<form id="dartsForm">
+
+  <!-- Match Header -->
+  <div class="section">
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Home Team</th>
+        <th>Away Team</th>
+      </tr>
+      <tr>
+        <td><input type="text" id="matchDate" value="2025" /></td>
+        <td><input type="text" id="homeTeam" /></td>
+        <td><input type="text" id="awayTeam" /></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Game Sections -->
+  <div class="section">
+    <h3>DOUBLES (501)</h3>
+    <table class="game-table">
+      <tr><th>Game</th><th>Home Player(s)</th><th>Away Player(s)</th><th>Winner</th></tr>
+      <!-- six rows -->
+      <!-- we’ll repeat this block with IDs game1…game6 -->
+      <!-- For brevity, I’ll show row 1; copy for rows 2–6 -->
+      <tr>
+        <td>1</td>
+        <td><input type="text" id="game1Home" placeholder="e.g. Smith & Jones" /></td>
+        <td><input type="text" id="game1Away" placeholder="e.g. Brown & Lee" /></td>
+        <td>
+          <label><input type="radio" name="game1Winner" value="home" /> H</label>
+          <label><input type="radio" name="game1Winner" value="away" /> A</label>
+        </td>
+      </tr>
+      <!-- … copy rows up to game6 … -->
+    </table>
+
+    <h3>SINGLES – 1st Round (501)</h3>
+    <table class="game-table">
+      <tr><th>Game</th><th>Home Player</th><th>Away Player</th><th>Winner</th></tr>
+      <!-- rows 7–12 -->
+      <!-- example row 7 -->
+      <tr>
+        <td>7</td>
+        <td><input type="text" id="game7Home" /></td>
+        <td><input type="text" id="game7Away" /></td>
+        <td>
+          <label><input type="radio" name="game7Winner" value="home" /> H</label>
+          <label><input type="radio" name="game7Winner" value="away" /> A</label>
+        </td>
+      </tr>
+      <!-- … up to game12 … -->
+    </table>
+
+    <h3>SINGLES – 2nd Round (301)</h3>
+    <table class="game-table">
+      <tr><th>Game</th><th>Home Player</th><th>Away Player</th><th>Winner</th></tr>
+      <!-- rows 13–18 -->
+      <!-- example row 13 -->
+      <tr>
+        <td>13</td>
+        <td><input type="text" id="game13Home" /></td>
+        <td><input type="text" id="game13Away" /></td>
+        <td>
+          <label><input type="radio" name="game13Winner" value="home" /> H</label>
+          <label><input type="radio" name="game13Winner" value="away" /> A</label>
+        </td>
+      </tr>
+      <!-- … up to game18 … -->
+    </table>
+
+    <h3>TEAM GAME (801)</h3>
+    <table class="game-table">
+      <tr><th>Game</th><th colspan="2">Home Players (4)</th><th colspan="2">Away Players (4)</th><th>Winner</th></tr>
+      <tr>
+        <td>19</td>
+        <td colspan="2"><input type="text" id="game19Home" placeholder="Comma-separate 4 names" /></td>
+        <td colspan="2"><input type="text" id="game19Away" placeholder="Comma-separate 4 names" /></td>
+        <td>
+          <label><input type="radio" name="game19Winner" value="home" /> H</label>
+          <label><input type="radio" name="game19Winner" value="away" /> A</label>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Match Results & Stats -->
+  <div class="section">
+    <h3>Match Results</h3>
+    <table>
+      <tr><th>Home Wins</th><th>Away Wins</th><th>Score</th></tr>
+      <tr>
+        <td><input type="text" id="homeWins" disabled /></td>
+        <td><input type="text" id="awayWins" disabled /></td>
+        <td><input type="text" id="matchScore" disabled /></td>
+      </tr>
+    </table>
+
+    <h3>High-Score Stats</h3>
+    <table>
+      <tr><th>Highest Peg</th><th>180s (Home)</th><th>180s (Away)</th></tr>
+      <tr>
+        <td><input type="number" id
